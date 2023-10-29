@@ -2,7 +2,7 @@ import React from 'react';
 import { Center, Text } from '@chakra-ui/react';
 import NavBar from './components/NavBar';
 import './App.css';
-import ItemListContainer from './components/ItemListContainer';
+
 
 
 const App = () => {
