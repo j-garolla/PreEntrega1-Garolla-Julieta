@@ -1,71 +1,79 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CartWidget from './CartWidget';
-import { Menu, MenuButton, MenuList, MenuItem, Box, Flex, Spacer } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import { Box, Flex, Spacer, HStack, Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
 
 const NavBar = () => {
+const [isCentered, setIsCentered] = useState(false);
+
 const cafeClueDivStyle = {
-    background: '#ffdbbe',
-    padding: '20px',
-    borderRadius: '10px',
-};
-
-const carritoDivStyle = {
-    background: '#ffd3d3',
-    padding: '20px',
-    borderRadius: '10px',
-};
-
-const menuButtonStyle = {
-    background: '#a8c1b4',
-    color: '#725752', 
-    borderRadius: '5px', 
-    padding: '10px',
-    fontFamily: 'Georgia, serif', 
+    background: isCentered ? '#239089' : 'transparent', 
+    padding: '26px',
+    borderRadius: '5px',
+    boxShadow: isCentered ? '0 0 10px rgba(0, 0, 0, 0.1)' : 'none', 
+    transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
 };
 
 const h3Style = {
-    color: '#8a6b37',
-    fontSize: '32px', 
-    fontFamily: 'Georgia, serif', 
-    textTransform: 'uppercase', 
+    color: '#c0c0c0', 
+    fontSize: '40px', 
+    fontFamily: 'Courier New, monospace', 
+    textTransform: 'uppercase',
 };
 
-const menuListStyle = {
-    background: '#a8c1b4',
-    fontFamily: 'Georgia, serif', 
+const carritoDivStyle = {
+    background: isCentered ? '#239089' : 'transparent', 
+    padding: '30px',
+    borderRadius: '5px',
+    boxShadow: isCentered ? '0 0 10px rgba(0, 0, 0, 0.1)' : 'none', 
+    transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
 };
 
 const menuItemStyle = {
-    color: '#725752',
+    color: '#239089', 
+    fontFamily: 'Courier New, monospace', 
+};
+
+const handleMenuClick = () => {
+    setIsCentered(!isCentered);
 };
 
 return (
     <div>
-<Flex>
+    <Flex>
         <Box p='10' style={cafeClueDivStyle}>
-<h3 style={h3Style}>Café Clue</h3>
+        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <h3 style={h3Style}>Café Clue</h3>
+        </Link>
         </Box>
+
         <Spacer />
 
+        <HStack spacing='4'>
         <Menu>
-<MenuButton style={menuButtonStyle}>
-            Combos: Menús + Misterio
-</MenuButton>
-<MenuList style={menuListStyle}>
-            <MenuItem style={menuItemStyle}>Combo 1: "Café del Crimen"</MenuItem>
-            <MenuItem style={menuItemStyle}>Combo 2: "Misterio en la Mocha Mansion"</MenuItem>
-            <MenuItem style={menuItemStyle}>Combo 3: "Sherlock y Watson en el Espresso Misterioso"</MenuItem>
-            <MenuItem style={menuItemStyle}>Combo 4: "Noches de Intriga"</MenuItem>
-</MenuList>
+            <MenuButton as={Box} style={{ background: '#f8f8f8', borderRadius: '5px', padding: '10px', fontFamily: 'Courier New, monospace' }} onClick={handleMenuClick}>
+            Categorías de Combos
+            </MenuButton>
+            <MenuList>
+            <MenuItem style={menuItemStyle}>
+                <Link to="/catalog/Combo1">Combos: Salados + Dulces</Link>
+            </MenuItem>
+            <MenuItem style={menuItemStyle}>
+                <Link to="/catalog/Combo2">Combos: Salados</Link>
+            </MenuItem>
+            <MenuItem style={menuItemStyle}>
+                <Link to="/catalog/Combo3">Combos: Dulces</Link>
+            </MenuItem>
+            </MenuList>
         </Menu>
 
-        <Spacer />
         <Box p='10' style={carritoDivStyle}>
-<CartWidget />
+            <CartWidget />
         </Box>
-</Flex>
+        </HStack>
+    </Flex>
     </div>
 );
-}
+};
 
 export default NavBar;
