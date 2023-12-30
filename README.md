@@ -1,14 +1,16 @@
-# Café Clue
+ Café Clue
 
-Bienvenido a Café Clue, donde cada momento se convierte en un deleite para tus sentidos. Descubre una experiencia culinaria inolvidable, ya sea que estés buscando disfrutar por tu cuenta o el regalo perfecto.
+## Descripción del Proyecto
+
+Café Clue es una aplicación web de comercio electrónico que permite a los usuarios explorar y comprar diferentes combos de café. Este proyecto se centra en proporcionar una experiencia de compra fácil y agradable para los amantes del café.
 
 ## Funcionalidades Principales
 
-- **Catálogo de Combos:** Explora nuestra variedad de combos temáticos, desde combinaciones saladas hasta opciones exclusivamente dulces.
+- **Catálogo de Combos:** Los usuarios pueden explorar una variedad de combos de café organizados por categorías.
 - **Detalles del Producto:** Haz clic en cada combo para ver detalles específicos, incluyendo imágenes, descripciones y precios.
-- **Carrito de Compras:** Agrega tus combos favoritos al carrito de compras y visualiza el total de elementos seleccionados en tiempo real.
+- **Carrito de Compras:** Los usuarios pueden agregar combos al carrito de compras y realizar pedidos.
+- **Historial de Compras:** Los clientes pueden ver su historial de compras, incluyendo detalles de pedidos anteriores.
 - **Proceso de Pago:** Completa tu compra proporcionando información de contacto y realiza el pago de forma segura.
-- **Historial de Compras:** Accede a un historial de tus compras anteriores.
 
 ## Tecnologías Utilizadas
 
