@@ -2,7 +2,7 @@
 
 ## Descripción del Proyecto
 
-Café Clue es una aplicación web de comercio electrónico que permite a los usuarios explorar y comprar diferentes combos de café. Este proyecto se centra en proporcionar una experiencia de compra fácil y agradable para los amantes del café.
+Café Clue es una aplicación web de comercio electrónico que permite a los usuarios explorar y comprar diferentes combos de cafetería. Este proyecto se centra en proporcionar una experiencia de compra fácil y agradable para los amantes del café.
 
 ## Funcionalidades Principales
 
