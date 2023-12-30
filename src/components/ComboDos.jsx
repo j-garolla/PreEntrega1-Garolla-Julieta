@@ -1,42 +1,57 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Text, Image, Button } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import { collection, getDocs } from 'firebase/firestore';
+import { database } from '../firebase/data';
 
-const Combo2 = () => {
-const combosSalados = [
-    {
-    id: 4, 
-    nombre: 'Combo Salado 1',
-    descripcion: 'Delicioso combo con opciones saladas.',
-    alimentos: ['Sandwich de pollo', 'Papas fritas', 'Refresco'],
-    },
-    {
-    id: 5,
-    nombre: 'Combo Salado 2',
-    descripcion: 'Exquisito combo de sabores salados.',
-    alimentos: ['Hamburguesa clásica', 'Aros de cebolla', 'Batido'],
-    },
-];
+const ComboDos = ({ greeting }) => {
+  const greetingStyle = {
+    fontSize: '20px',
+    color: '#239089',
+    margin: '10px',
+    fontFamily: 'Courier New, monospace',
+  };
 
-return (
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const itemsRef = collection(database, 'items');
+
+    getDocs(itemsRef).then((snapshot) => {
+      const itemsData = snapshot.docs
+        .filter((doc) => ['4', '5'].includes(doc.id))
+        .map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+
+      setItems(itemsData);
+    });
+  }, []);
+
+  return (
     <div>
-        <h2>Combos: Salados</h2>
-    {combosSalados.map((combo) => (
-        <Box key={combo.id} borderWidth="1px" borderRadius="lpx" overflow="hidden" p="4" m="4">
-        <Text fontSize="xl" fontWeight="bold" mt="2">
-            {combo.nombre}
-        </Text>
-        <Text>{combo.descripcion}</Text>
-        <Text>Alimentos: {combo.alimentos.join(', ')}</Text>
-        <Link to={`/product/${combo.id}`}>
-            <Button colorScheme="teal" mt="4">
-            Ver más detalles
+      <h2 style={greetingStyle}>{greeting}</h2>
+
+      {}
+      <ul>
+        {items.map((item) => (
+          <li key={item.id}>
+            <img
+              src={item.imagenURL}
+              alt={item.nombre}
+              style={{ maxWidth: '100px', maxHeight: '600px' }}
+            />
+            <p>{item.nombre}</p>
+            <p>{item.descripcion}</p>
+            {}
+            <Button colorScheme="teal">
+              <Link to={`/product/${item.id}`}>Ver más detalles</Link>
             </Button>
-        </Link>
-        </Box>
-    ))}
+          </li>
+        ))}
+      </ul>
     </div>
-);
+  );
 };
 
-export default Combo2;
+export default ComboDos;

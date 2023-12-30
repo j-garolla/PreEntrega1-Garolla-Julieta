@@ -1,37 +1,45 @@
 import React, { useState } from 'react';
 import CartWidget from './CartWidget';
 import { Link } from 'react-router-dom';
-import { Box, Flex, Spacer, HStack, Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
+import { Box, Flex, Spacer, HStack, Menu, MenuButton, MenuList, MenuItem, Text } from '@chakra-ui/react';
 
 const NavBar = () => {
 const [isCentered, setIsCentered] = useState(false);
 
 const cafeClueDivStyle = {
-    background: isCentered ? '#239089' : 'transparent', 
+    background: isCentered ? '#239089' : 'transparent',
     padding: '26px',
     borderRadius: '5px',
-    boxShadow: isCentered ? '0 0 10px rgba(0, 0, 0, 0.1)' : 'none', 
+    boxShadow: isCentered ? '0 0 10px rgba(0, 0, 0, 0.1)' : 'none',
     transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
 };
 
 const h3Style = {
-    color: '#c0c0c0', 
-    fontSize: '40px', 
-    fontFamily: 'Courier New, monospace', 
+    color: '#c0c0c0',
+    fontSize: '40px',
+    fontFamily: 'Courier New, monospace',
     textTransform: 'uppercase',
 };
 
 const carritoDivStyle = {
-    background: isCentered ? '#239089' : 'transparent', 
+    background: isCentered ? '#239089' : 'transparent',
     padding: '30px',
     borderRadius: '5px',
-    boxShadow: isCentered ? '0 0 10px rgba(0, 0, 0, 0.1)' : 'none', 
+    boxShadow: isCentered ? '0 0 10px rgba(0, 0, 0, 0.1)' : 'none',
     transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
 };
 
 const menuItemStyle = {
-    color: '#239089', 
-    fontFamily: 'Courier New, monospace', 
+    color: 'inherit',
+    fontFamily: 'Courier New, monospace',
+};
+
+const historialDivStyle = {
+    background: isCentered ? '#239089' : 'transparent',
+    padding: '30px',
+    borderRadius: '5px',
+    boxShadow: isCentered ? '0 0 10px rgba(0, 0, 0, 0.1)' : 'none',
+    transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
 };
 
 const handleMenuClick = () => {
@@ -70,6 +78,13 @@ return (
         <Box p='10' style={carritoDivStyle}>
             <CartWidget />
         </Box>
+
+        <Link to="./checkout" style={{ textDecoration: 'none', color: 'inherit' }}>
+<Box p='10' style={historialDivStyle}>
+    <Text style={menuItemStyle}>Historial de Compras</Text>
+</Box>
+</Link>
+
         </HStack>
     </Flex>
     </div>

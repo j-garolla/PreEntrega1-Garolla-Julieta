@@ -9,11 +9,16 @@ import Combo1 from './components/ComboUno';
 import Combo2 from './components/ComboDos'; 
 import Combo3 from './components/ComboTres';
 
-const Cart = () => (
-  <div>
+import { CartProvider } from './components/CartContext';
+import Checkout from './components/Checkout';
+
+
+
+ const Cart = () => (
+ <div>
     <h2>Carrito de compras</h2>
   </div>
-);
+ );
 
 const App = () => {
   const welcomeContainerStyle = {
@@ -33,6 +38,7 @@ const App = () => {
   };
 
   return (
+    <CartProvider>
     <Router>
       <div>
         <NavBar />
@@ -44,19 +50,23 @@ const App = () => {
             <Routes>
               <Route
                 path="/"
-                element={<ItemListContainer greeting="Ya sea que estés en busca de una experiencia personal o un regalo temático, nuestra cafetería virtual y e-commerce te ofrecen una experiencia completa de misterio y entretenimiento." />}
+                element={<ItemListContainer greeting="Descubre una experiencia culinaria inolvidable, ya sea que estés buscando disfrutar por tu cuenta o el regalo perfecto. Bienvenido a nuestra cafetería virtual, donde cada momento se convierte en un deleite para tus sentidos." />}
               />
               <Route path="/catalog" element={<Catalog />} />
               <Route path="/product/:id" element={<ProductDetail />} />
-              <Route path="/cart" element={<Cart />} />
+              { <Route path="/cart" element={<Cart />} /> }
               <Route path="/catalog/combo1" element={<Combo1 />} />
               <Route path="/catalog/combo2" element={<Combo2 />} />
               <Route path="/catalog/combo3" element={<Combo3 />} /> 
-            </Routes>
-          </div>
-        </Center>
-      </div>
-    </Router>
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
+            
+              </Routes>
+            </div>
+          </Center>
+        </div>
+      </Router>
+    </CartProvider>
   );
 };
 

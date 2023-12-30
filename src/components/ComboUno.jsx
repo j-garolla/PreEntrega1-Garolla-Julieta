@@ -1,46 +1,56 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Text, Image, Button } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import { collection, getDocs } from 'firebase/firestore';
+import { database } from '../firebase/data';
 
-const Combo1 = () => {
-return (
+const ComboUno = ({ greeting }) => {
+  const greetingStyle = {
+    fontSize: '20px',
+    color: '#239089',
+    margin: '10px',
+    fontFamily: 'Courier New, monospace',
+  };
+
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const itemsRef = collection(database, 'items');
+
+    getDocs(itemsRef).then((snapshot) => {
+      const itemsData = snapshot.docs
+        .filter((doc) => ['1', '2', '3'].includes(doc.id)) // Filtrar solo los ID 1, 2 y 3
+        .map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+
+      setItems(itemsData);
+    });
+  }, []);
+
+  return (
     <div>
-    <h2>Combos: Salados + Dulce</h2>
+      <h2 style={greetingStyle}>{greeting}</h2>
 
-
-    <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p="4" m="4">
-        <Text fontSize="xl" fontWeight="bold" mt="2">
-        Combo Salado y Dulce 1
-        </Text>
-        <Text>Descripción del combo salado y dulce.</Text>
-        <Button colorScheme="teal" mt="4">
-        <Link to="/product/1">Ver más detalles</Link>
-        </Button>
-    </Box>
-
-
-    <Box borderWidth="1px" borderRadius="lpx" overflow="hidden" p="4" m="4">
-        <Text fontSize="xl" fontWeight="bold" mt="2">
-        Combo Salado y Dulce 2
-        </Text>
-        <Text>Descripción del combo salado y dulce.</Text>
-        <Button colorScheme="teal" mt="4">
-        <Link to="/product/2">Ver más detalles</Link>
-        </Button>
-    </Box>
-
-    <Box borderWidth="1px" borderRadius="l" overflow="hidden" p="4" m="4">
-        <Image src="ruta-de-la-imagen-3" alt="Combo 3" />
-        <Text fontSize="xl" fontWeight="bold" mt="2">
-        Combo Salado y Dulce 3
-        </Text>
-        <Text>Descripción del combo salado y dulce.</Text>
-        <Button colorScheme="teal" mt="4">
-        <Link to="/product/3">Ver más detalles</Link>
-        </Button>
-    </Box>
+      {/* Renderizar los datos en tu componente */}
+      <ul>
+        {items.map((item) => (
+          <li key={item.id}>
+            <img
+              src={item.imagenURL}
+              alt={item.nombre}
+              style={{ maxWidth: '100px', maxHeight: '600px' }}
+            />
+            <p>{item.nombre}</p>
+            <p>{item.descripcion}</p>
+            <Button colorScheme="teal">
+              <Link to={`/product/${item.id}`}>Ver más detalles</Link>
+            </Button>
+          </li>
+        ))}
+      </ul>
     </div>
-);
+  );
 };
 
-export default Combo1;
+export default ComboUno;

@@ -1,116 +1,86 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Text, Button, Flex } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import { doc, getDoc } from 'firebase/firestore';
+import { database } from '../firebase/data';
+import { useCart } from './CartContext';
 
 const ProductDetail = () => {
-const { id } = useParams();
+  const { id } = useParams();
+  const { addToCart } = useCart();
 
+  const [combo, setCombo] = useState(null);
+  const [cantidad, setCantidad] = useState(1);
+  const [mensajeAgregado, setMensajeAgregado] = useState(null); // Nuevo estado para el mensaje
 
-
-const combos = [
-    {
-    id: '1',
-    nombre: 'Combo Salado y Dulce 1',
-    descripcion: 'Delicioso combo con opciones saladas y dulces.',
-    alimentos: ['Croissant', 'Empanada de carne', 'Café'],
-    },
-    {
-    id: '2',
-    nombre: 'Combo Salado y Dulce 2',
-    descripcion: 'Perfecta combinación de sabores salados y dulces.',
-    alimentos: ['Sandwich de pollo', 'Brownie', 'Té helado'],
-    },
-    {
-    id: '3',
-    nombre: 'Combo Salado y Dulce 3',
-    descripcion: 'Una experiencia gastronómica única con este combo.',
-    alimentos: ['Pizza margarita', 'Galletas de chocolate', 'Limonada'],
-    },
-    {
-    id: '4',
-    nombre: 'Combo Salado 1',
-    descripcion: 'Misterio en la Mocha Mansion 1: Delicioso combo con opciones saladas.',
-    alimentos: ['Sandwich de pollo', 'Papas fritas', 'Refresco'],
-    },
-    {
-    id: '5',
-    nombre: 'Combo Salado 2',
-    descripcion: 'Misterio en la Mocha Mansion 2: Exquisito combo de sabores salados.',
-    alimentos: ['Hamburguesa clásica', 'Aros de cebolla', 'Batido'],
-    },
-    {
-    id: '6',
-    nombre: 'Combo Dulce 1',
-    descripcion: 'Dulce tentación: una mezcla de delicias azucaradas.',
-    alimentos: ['Cupcake de vainilla', 'Helado de fresa', 'Frutas frescas'],
-    },
-    {
-    id: '7',
-    nombre: 'Combo Dulce 2',
-    descripcion: 'Sueños de chocolate: un festín para los amantes del cacao.',
-    alimentos: ['Brownie de chocolate', 'Trufas de caramelo', 'Batido de chocolate'],
-    },
-    {
-    id: '8',
-    nombre: 'Combo Dulce 3',
-    descripcion: 'Para paladares golosos: variedad de postres para todos.',
-    alimentos: ['Tarta de frutas', 'Galletas decoradas', 'Café con crema'],
-    },
-];
-
-const combo = combos.find((c) => c.id === id);
-
-if (!combo) {
-    return <Text>Combo no encontrado</Text>;
-}
-
-
-const [cantidad, setCantidad] = useState(1);
-
-const aumentarCantidad = () => {
+  const aumentarCantidad = () => {
     setCantidad(cantidad + 1);
-};
+  };
 
-const disminuirCantidad = () => {
+  const disminuirCantidad = () => {
     if (cantidad > 1) {
-    setCantidad(cantidad - 1);
+      setCantidad(cantidad - 1);
     }
-};
+  };
 
-const agregarAlCarrito = () => {
-    console.log(`Agregado al carrito: ${cantidad} ${combo.nombre}`);
-};
+  const agregarAlCarrito = () => {
+    addToCart({ combo, cantidad });
+    const mensaje = `Añadiste al carrito: ${cantidad} ${combo.nombre}`;
+    setMensajeAgregado(mensaje);
+    console.log(mensaje);
+  };
 
-return (
+  useEffect(() => {
+    const docRef = doc(database, 'items', id);
+    getDoc(docRef)
+      .then((resp) => {
+        setCombo({ ...resp.data(), id: resp.id });
+      })
+      .catch((error) => {
+        console.error('Error al obtener el documento:', error);
+      });
+  }, [id]);
+
+  if (!combo) {
+    return <Text>Cargando...</Text>;
+  }
+
+  return (
     <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p="4" m="4">
-    <Text fontSize="xl" fontWeight="bold" mt="2">
+      <Text fontSize="xl" fontWeight="bold" mt="2">
         {combo.nombre}
-    </Text>
-    <Text>{combo.descripcion}</Text>
-    <Text>Alimentos: {combo.alimentos.join(', ')}</Text>
+      </Text>
+      <Text>{combo.descripcion}</Text>
+      <Text>Alimentos: {combo.alimentos.join(', ')}</Text>
 
-    <Flex alignItems="center" mt="4">
+      <Flex alignItems="center" mt="4">
         <Button colorScheme="teal" onClick={disminuirCantidad}>
-        -
+          -
         </Button>
         <Text mx="4">{cantidad}</Text>
         <Button colorScheme="teal" onClick={aumentarCantidad}>
-        +
+          +
         </Button>
-    </Flex>
+      </Flex>
 
-    <Button colorScheme="teal" mt="4" onClick={agregarAlCarrito}>
+      <Button colorScheme="teal" mt="4" onClick={agregarAlCarrito}>
         Añadir al carrito
-    </Button>
+      </Button>
 
-    <Link to="/">
+      {mensajeAgregado && (
+        <Text color="green" mt="2">
+          {mensajeAgregado}
+        </Text>
+      )}
+
+      <Link to="/">
         <Button colorScheme="teal" mt="4" ml="2">
-        Volver a la página principal
+          Volver a la página principal
         </Button>
-    </Link>
+      </Link>
     </Box>
-);
+  );
 };
 
 export default ProductDetail;
